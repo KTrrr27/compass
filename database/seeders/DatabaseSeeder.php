@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Users\Subjects;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,7 +18,8 @@ class DatabaseSeeder extends Seeder
     {
         // Register your seeders here
         $this->call([
-
+            SubjectsTableSeeder::class,
+            UsersTableSeeder::class,
         ]);
     }
 }
