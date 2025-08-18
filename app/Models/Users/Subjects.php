@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Users\User;
 
-//ファイル名クラス名変更
-class Subject extends Model
+class Subjects extends Model
 {
     const UPDATED_AT = null;
 
