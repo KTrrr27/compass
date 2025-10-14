@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use DB;
+use App\Http\Requests\RegisterUserRequest;
 
 use App\Models\Users\Subjects;
 use App\Models\Users\User;
@@ -35,7 +36,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
         DB::beginTransaction();
         try{
