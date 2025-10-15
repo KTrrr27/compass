@@ -62,5 +62,24 @@ $(function () {
     $('.js-modal').fadeOut();
     return false;
   });
+  //編集用のモーダルを引用して削除モーダル作成
+  //$('.delete-modal-open').on('click',function(){
+  //  var post_id = $(this).attr('post_id');
+  //  $('.delete-js-modal').fadeIn();
+  //  $('.delete-modal-hidden').val(post_id);
+  //  $('.delete-js-modal form').attr('action',`/bulletin_board/delete/${post_id}`);
+  //  return false;
+  //});
+  //$('.js-modal-close').on('click', function () {
+  //  $('.delete-js-modal').fadeOut();
+  //  return false;
+  //});
 
+  //見本に合わせたダイアログ
+  $('.delete-modal-open').on('click',function(){
+    const post_id = $(this).attr('post_id');
+    if (confirm('削除してよろしいですか？')) {
+      window.location.href = `/bulletin_board/delete/${post_id}`;
+    }
+  })
 });

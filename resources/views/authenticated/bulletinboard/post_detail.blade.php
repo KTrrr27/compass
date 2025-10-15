@@ -6,10 +6,12 @@
         <div class="detail_inner_head">
           <div>
           </div>
+          @if (Auth::user()->id == $post->user_id)
           <div>
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+            <span class="delete-modal-open" post_id="{{ $post->id }}">削除</span>
           </div>
+          @endif
         </div>
 
         <div class="contributor d-flex">
@@ -20,7 +22,13 @@
           </p>
           <span class="ml-5">{{ $post->created_at }}</span>
         </div>
+        @error('post_title')
+        <div class="text-danger">{{$message}}</div>
+        @enderror
         <div class="detsail_post_title">{{ $post->post_title }}</div>
+        @error('post_body')
+        <div class="text-danger">{{$message}}</div>
+        @enderror
         <div class="mt-3 detsail_post">{{ $post->post }}</div>
       </div>
       <div class="p-3">
@@ -72,4 +80,22 @@
     </form>
   </div>
 </div>
+<!--編集用のモーダルを引用して削除モーダル作成-->
+<!--<div class="modal delete-js-modal">
+  <div class="modal__bg js-modal-close"></div>
+  <div class="modal__content">
+    <form class="delete-form" method="get">
+      <div class="w-100">
+        <div class="modal-inner-body w-50 m-auto pt-3 pb-3">
+          <p>削除してよろしいですか？</p>
+        </div>
+        <div class="w-50 m-auto delete-modal-btn d-flex">
+          <a class="js-modal-close btn btn-outline-primary d-inline-block" href="">キャンセル</a>
+          <input type="hidden" class="delete-modal-hidden" name="post_id" value="">
+          <input type="submit" class="btn btn-primary d-block" value="OK">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>-->
 </x-sidebar>
