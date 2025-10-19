@@ -19,16 +19,27 @@ class PostsController extends Controller
     public function show(Request $request)
     {
         $posts = Post::with('user', 'postComments')->get();
-        $categories = MainCategory::get();
+        //$categories = MainCategory::get();
+        $categories = MainCategory::with('subCategories')->get();
         $like = new Like;
         $post_comment = new Post;
         if (!empty($request->keyword)) {
-            $posts = Post::with('user', 'postComments')
+            $matchedSubCategory = subCategory::where('sub_category',$request->keyword)->first();
+            if ($matchedSubCategory) {
+                # code...
+                $postIds = DB::table('post_sub_categories')->where('sub_category_id',$matchedSubCategory->id)->pluck('post_id');
+                $posts = Post::with('user','postComments')->whereIn('id',$postIds)->get();
+            } else {
+                # code...
+                $posts = Post::with('user', 'postComments')
                 ->where('post_title', 'like', '%' . $request->keyword . '%')
                 ->orWhere('post', 'like', '%' . $request->keyword . '%')->get();
+            }
         } else if ($request->category_word) {
-            $sub_category = $request->category_word;
-            $posts = Post::with('user', 'postComments')->get();
+            //$sub_category = $request->category_word;
+            $sub_category = SubCategory::where('sub_category',$request->category_word)->first();
+            $postIds = DB::table('post_sub_categories')->where('sub_category_id',$sub_category->id)->pluck('post_id');
+            $posts = Post::with('user', 'postComments')->whereIn('id',$postIds)->get();
         } else if ($request->like_posts) {
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
@@ -62,7 +73,7 @@ class PostsController extends Controller
 
         DB::table('post_sub_categories')->insert([
             'post_id'=>$post->id,
-            'sub_category_id'=>$request->sub_category_id,
+            'sub_category_id'=>$request->post_category_id,
             'created_at'=>now()
         ]);
         return redirect()->route('post.show');
