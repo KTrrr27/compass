@@ -271,7 +271,7 @@ li {
 }
 
 .search_conditions_inner {
-  display: none;
+  /*display: none;*/
   background: #FFF;
 }
 
