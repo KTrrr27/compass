@@ -50,6 +50,7 @@ class CalendarView{
         $label = "受付終了";
         if(in_array($day->everyDay(), $day->authReserveDay())){
           $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
+          $reserve_Id = $day->authReserveDate($day->everyDay())->first()->id;
           if($reservePart == 1){
             $reservePart = "リモ1部";
             $label = "1部参加";
@@ -64,8 +65,31 @@ class CalendarView{
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">'.$label.'</p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{
-            $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
-            $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+            $reserve = $day->authReserveDate($day->everyDay())->first()->setting_reserve;
+            $html[] = '<button type="button" id="delete-model-open-'.$reserve.'" reserve_id="'.$reserve_Id.'"  class="day-delete-modal-open btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" >'. $reservePart .'</button>';
+            $html[] = '
+            <div class="modal delete-js-modal">
+              <div class="modal__bg js-modal-close"></div>
+              <div class="modal__content">
+                <form class="delete-form" method="post" action="/delete/calendar">
+                '.csrf_field().'
+                  <div class="w-100">
+                    <div class="modal-inner-body text-left w-50 m-auto pt-3 pb-3">
+                      <p>予約日：'.$reserve.'</p>
+                      <p>時間：'.$reservePart.'</p>
+                      <p>上記の予約をキャンセルしてよろしいですか？</p>
+                    </div>
+                    <div class="w-50 m-auto delete-modal-btn d-flex">
+                      <a class="js-modal-close btn btn-primary d-inline-block" href="">閉じる</a>
+                      <input type="hidden" class="delete-modal-hidden-reserveId" name="reserve_id" value="">
+                      <input type="submit" class="btn btn-danger d-block" value="キャンセル">
+                      <input type="hidden" name="getPart[]" value="" form="reserveParts">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            ';
           }
         }else{
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
