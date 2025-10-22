@@ -46,9 +46,9 @@ class CalendarWeekDay{
     }
 
     $html[] = '<div class="text-left">';
-    $html[] = '<p class="day_part m-0 pt-1">1部'.$one_count.'</p>';
-    $html[] = '<p class="day_part m-0 pt-1">2部'.$two_count.'</p>';
-    $html[] = '<p class="day_part m-0 pt-1">3部'.$three_count.'</p>';
+    $html[] = '<p class="day_part m-0 pt-1"><a href="'.route('calendar.admin.detail',['date' => $ymd,'part' =>1]).'">1部</a>'.$one_count.'</p>';
+    $html[] = '<p class="day_part m-0 pt-1"><a href="'.route('calendar.admin.detail',['date' => $ymd,'part' =>2]).'">2部</a>'.$two_count.'</p>';
+    $html[] = '<p class="day_part m-0 pt-1"><a href="'.route('calendar.admin.detail',['date' => $ymd,'part' =>3]).'">3部</a>'.$three_count.'</p>';
     $html[] = '</div>';
 
     return implode("", $html);
