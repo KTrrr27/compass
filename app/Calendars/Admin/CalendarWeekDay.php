@@ -29,16 +29,26 @@ class CalendarWeekDay{
     $two_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
     $three_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
 
+    if($one_part == null){
+      $one_count = 0;
+    } else {
+      $one_count = $one_part->users->count();
+    }
+    if($two_part == null){
+      $two_count = 0;
+    } else {
+      $two_count = $two_part->users->count();
+    }
+    if($three_part == null){
+      $three_count = 0;
+    } else {
+      $three_count = $three_part->users->count();
+    }
+
     $html[] = '<div class="text-left">';
-    if($one_part){
-      $html[] = '<p class="day_part m-0 pt-1">1部</p>';
-    }
-    if($two_part){
-      $html[] = '<p class="day_part m-0 pt-1">2部</p>';
-    }
-    if($three_part){
-      $html[] = '<p class="day_part m-0 pt-1">3部</p>';
-    }
+    $html[] = '<p class="day_part m-0 pt-1">1部'.$one_count.'</p>';
+    $html[] = '<p class="day_part m-0 pt-1">2部'.$two_count.'</p>';
+    $html[] = '<p class="day_part m-0 pt-1">3部'.$three_count.'</p>';
     $html[] = '</div>';
 
     return implode("", $html);
